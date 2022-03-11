@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  insightairport.central:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+
+  insightairport:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ConnectionStrings__DefaultConnection=Server=mssql,1433;Database=InsightAirport;User ID=sa;Password=aZ123456mH;MultipleActiveResultSets=true
+    ports:
+      - "80"
+      - "443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  mssql:
+    environment:
+     - ACCEPT_EULA=Y
+     - SA_PASSWORD=aZ123456mH
+    ports:
+     - "1433:1433"

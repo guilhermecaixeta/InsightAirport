@@ -1,0 +1,30 @@
+version: '3.4'
+
+services:
+  insightairport.central:
+    image: ${DOCKER_REGISTRY-}insightairportcentral
+    build:
+      context: .
+      dockerfile: InsightAirport.Central/Dockerfile
+    depends_on: 
+     - insightairport
+    networks:
+     - insight-airport-network
+
+  insightairport:
+    image: ${DOCKER_REGISTRY-}insightairport
+    build:
+      context: .
+      dockerfile: InsightAirport/Dockerfile
+    depends_on: 
+     - mssql
+    networks:
+     - insight-airport-network
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-CU15-ubuntu-20.04
+    networks:
+     - insight-airport-network
+
+networks:
+    insight-airport-network:  
